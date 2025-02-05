@@ -93,7 +93,7 @@
             },
             update_clock() {
                 var dtm = new Date();
-                var hr = Sugar.String.toNumber(Sugar.Date.format(dtm, '%I'));
+                var hr = dtm.getHours(); // Sugar.String.toNumber(Sugar.Date.format(dtm, '%I'));
                 var min = Sugar.String.toNumber(Sugar.Date.format(dtm, '{m}'));
                 var sec = Sugar.String.toNumber(Sugar.Date.format(dtm, '{s}'));
                 var mili = Sugar.String.toNumber(Sugar.Date.format(dtm, '{HH}{mm}'));
