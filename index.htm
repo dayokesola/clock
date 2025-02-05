@@ -8,6 +8,15 @@
     <meta http-equiv="refresh" content="1800000">
     <title>Dayo's Cool Clock</title>
     <link rel="stylesheet" type="text/css" href="style.css?id=dededfecef">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GNY40TE2L7"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-GNY40TE2L7');
+    </script>
 </head>
 <body>
     <div id="app" class="container">
@@ -22,196 +31,202 @@
 <script src="vue.global.js"></script>
 <script src="sugar.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-    const { createApp } = Vue;
-    var app = createApp({
-        data() {
-            return {
-                chars: "ITSFABOUTUTHTWENTYBTENFIFIVETQUARTERMINUTESHALFETOPASTVFIVENONETWOTHREEGFOURSIXSEVENEIGHTNINETENELEVENTWELVEOCLOCKSTIMEAFORFAOCOFFEETEALUNCHOME!",
-                time: [],
-                bg_body: "#808f85",
-                bg_on_bg: "#595959",
-                bg_on_text: "#dce0d9",
-                bg_off_bg: "#dce0d9",
-                bg_off_text: "#595959",
-                interval: 10000,
-            }
-        },
-        computed: {
-            char_array() {
-                return this.chars.split('');
-            }
-        },
-        methods: {
-            start_clock() {
-                this.update_clock();
-                $(".flex-container div:nth-child(2)").append("'");
-                $(".flex-container div:nth-child(109)").append("'");
-                $("body").css("background-color", this.bg_body);
-                setInterval(() => {
+
+    $(document).ready(function () {
+
+        const { createApp } = Vue;
+        var app = createApp({
+            data() {
+                return {
+                    chars: "ITSFABOUTUTHTWENTYBTENFIFIVETQUARTERMINUTESHALFETOPASTVFIVENONETWOTHREEGFOURSIXSEVENEIGHTNINETENELEVENTWELVEOCLOCKSTIMEAFORFAOCOFFEETEALUNCHOME!",
+                    time: [],
+                    bg_body: "#808f85",
+                    bg_on_bg: "#595959",
+                    bg_on_text: "#dce0d9",
+                    bg_off_bg: "#dce0d9",
+                    bg_off_text: "#595959",
+                    interval: 10000,
+                }
+            },
+            computed: {
+                char_array() {
+                    return this.chars.split('');
+                }
+            },
+            methods: {
+                start_clock() {
                     this.update_clock();
-                }, this.interval);
-            },
-            light(char) {
-                this.time.push(char);
-            },
-            paintclock() {
-                var txt = this.chars;
-                let offset = 0;
-                for (var i = 0; i < this.time.length; i++) {
-                    var ix = this.chars.indexOf(this.time[i].toUpperCase(), offset);
-                    offset = ix;
-                    for (var k = 0; k < this.time[i].length; k++) {
-                        $(".flex-container div:nth-child(" + (ix + 1 + k) + ")").css("background-color", this.bg_on_bg);
-                        $(".flex-container div:nth-child(" + (ix + 1 + k) + ")").css("color", this.bg_on_text);
+                    $(".flex-container div:nth-child(2)").append("'");
+                    $(".flex-container div:nth-child(109)").append("'");
+                    $("body").css("background-color", this.bg_body);
+                    setInterval(() => {
+                        this.update_clock();
+                    }, this.interval);
+                },
+                light(char) {
+                    this.time.push(char);
+                },
+                paintclock() {
+                    var txt = this.chars;
+                    let offset = 0;
+                    for (var i = 0; i < this.time.length; i++) {
+                        var ix = this.chars.indexOf(this.time[i].toUpperCase(), offset);
+                        offset = ix;
+                        for (var k = 0; k < this.time[i].length; k++) {
+                            $(".flex-container div:nth-child(" + (ix + 1 + k) + ")").css("background-color", this.bg_on_bg);
+                            $(".flex-container div:nth-child(" + (ix + 1 + k) + ")").css("color", this.bg_on_text);
+                        }
                     }
-                }
+                },
+                get_current_hour(h) {
+                    let txt = "";
+                    switch (h) {
+                        case 1: txt = "one"; break;
+                        case 2: txt = "two"; break;
+                        case 3: txt = "three"; break;
+                        case 4: txt = "four"; break;
+                        case 5: txt = "five"; break;
+                        case 6: txt = "six"; break;
+                        case 7: txt = "seven"; break;
+                        case 8: txt = "eight"; break;
+                        case 9: txt = "nine"; break;
+                        case 10: txt = "ten"; break;
+                        case 11: txt = "eleven"; break;
+                        case 12: txt = "twelve"; break;
+                    }
+                    return txt;
+                },
+                get_next_hour(h) {
+                    var h1 = h + 1;
+                    if (h1 > 12) {
+                        h1 = 1;
+                    }
+                    return this.get_current_hour(h1);
+                },
+                update_clock() {
+                    var dtm = new Date();
+                    var hr = dtm.getHours(); // Sugar.String.toNumber(Sugar.Date.format(dtm, '%I'));
+                    var min = Sugar.String.toNumber(Sugar.Date.format(dtm, '{m}'));
+                    var sec = Sugar.String.toNumber(Sugar.Date.format(dtm, '{s}'));
+                    var mili = Sugar.String.toNumber(Sugar.Date.format(dtm, '{HH}{mm}'));
+                    console.log("Time: " + hr + ":" + min + ":" + sec + ":" + mili);
+                    this.time = [];
+                    $(".flex-container").children().css("background-color", this.bg_off_bg);
+                    $(".flex-container").children().css("color", this.bg_off_text);
+                    this.light('its');
+                    this.light('about');
+                    switch (true) {
+                        case (min < 3):
+                            this.light(this.get_current_hour(hr));
+                            this.light('oclock');
+                            break;
+                        case (min < 8):
+                            this.light('five');
+                            this.light('minutes');
+                            this.light('past');
+                            this.light(this.get_current_hour(hr));
+                            break;
+                        case (min < 13):
+                            this.light('ten');
+                            this.light('minutes');
+                            this.light('past');
+                            this.light(this.get_current_hour(hr));
+                            break;
+                        case (min < 18):
+                            this.light('quarter');
+                            this.light('past');
+                            this.light(this.get_current_hour(hr));
+                            break;
+                        case (min < 23):
+                            this.light('twenty');
+                            this.light('minutes');
+                            this.light('past');
+                            this.light(this.get_current_hour(hr));
+                            break;
+                        case (min < 28):
+                            this.light('twenty');
+                            this.light('five');
+                            this.light('minutes');
+                            this.light('past');
+                            this.light(this.get_current_hour(hr));
+                            break;
+                        case (min < 33):
+                            this.light('half');
+                            this.light('past');
+                            this.light(this.get_current_hour(hr));
+                            break;
+                        case (min < 38):
+                            this.light('twenty');
+                            this.light('five');
+                            this.light('minutes');
+                            this.light('to');
+                            this.light(this.get_next_hour(hr));
+                            break;
+                        case (min < 43):
+                            this.light('twenty');
+                            this.light('minutes');
+                            this.light('to');
+                            this.light(this.get_next_hour(hr));
+                            break;
+                        case (min < 48):
+                            this.light('quarter');
+                            this.light('to');
+                            this.light(this.get_next_hour(20));
+                            break;
+                        case (min < 53):
+                            this.light('ten');
+                            this.light('minutes');
+                            this.light('to');
+                            this.light(this.get_next_hour(hr));
+                            break;
+                        case (min < 58):
+                            this.light('five');
+                            this.light('minutes');
+                            this.light('to');
+                            this.light(this.get_next_hour(hr));
+                            break;
+                        case (min < 60):
+                            this.light(this.get_next_hour(hr));
+                            this.light('oclock');
+                            break;
+                    }
+                    if (mili >= 800 && mili <= 900) {
+                        this.light('time');
+                        this.light('for');
+                        this.light('a');
+                        this.light('coffee');
+                    }
+
+
+                    if (mili >= 1300 && mili <= 1400) {
+                        this.light('time');
+                        this.light('for');
+                        this.light('lunch');
+                    }
+
+                    if (mili >= 1500 && mili <= 1600) {
+                        this.light('time');
+                        this.light('for');
+                        this.light('tea');
+                    }
+
+                    if (mili >= 1800 && mili <= 2000) {
+                        this.light('time');
+                        this.light('for');
+                        this.light('home!');
+                    }
+
+
+
+                    this.paintclock();
+                },
             },
-            get_current_hour(h) {
-                let txt = "";
-                switch (h) {
-                    case 1: txt = "one"; break;
-                    case 2: txt = "two"; break;
-                    case 3: txt = "three"; break;
-                    case 4: txt = "four"; break;
-                    case 5: txt = "five"; break;
-                    case 6: txt = "six"; break;
-                    case 7: txt = "seven"; break;
-                    case 8: txt = "eight"; break;
-                    case 9: txt = "nine"; break;
-                    case 10: txt = "ten"; break;
-                    case 11: txt = "eleven"; break;
-                    case 12: txt = "twelve"; break;
-                }
-                return txt;
-            },
-            get_next_hour(h) {
-                var h1 = h + 1;
-                if (h1 > 12) {
-                    h1 = 1;
-                }
-                return this.get_current_hour(h1);
-            },
-            update_clock() {
-                var dtm = new Date();
-                var hr = dtm.getHours(); // Sugar.String.toNumber(Sugar.Date.format(dtm, '%I'));
-                var min = Sugar.String.toNumber(Sugar.Date.format(dtm, '{m}'));
-                var sec = Sugar.String.toNumber(Sugar.Date.format(dtm, '{s}'));
-                var mili = Sugar.String.toNumber(Sugar.Date.format(dtm, '{HH}{mm}'));
-                this.time = [];
-                $(".flex-container").children().css("background-color", this.bg_off_bg);
-                $(".flex-container").children().css("color", this.bg_off_text);
-                this.light('its');
-                this.light('about');
-                switch (true) {
-                    case (min < 3):
-                        this.light(this.get_current_hour(hr));
-                        this.light('oclock');
-                        break;
-                    case (min < 8):
-                        this.light('five');
-                        this.light('minutes');
-                        this.light('past');
-                        this.light(this.get_current_hour(hr));
-                        break;
-                    case (min < 13):
-                        this.light('ten');
-                        this.light('minutes');
-                        this.light('past');
-                        this.light(this.get_current_hour(hr));
-                        break;
-                    case (min < 18):
-                        this.light('quarter');
-                        this.light('past');
-                        this.light(this.get_current_hour(hr));
-                        break;
-                    case (min < 23):
-                        this.light('twenty');
-                        this.light('minutes');
-                        this.light('past');
-                        this.light(this.get_current_hour(hr));
-                        break;
-                    case (min < 28):
-                        this.light('twenty');
-                        this.light('five');
-                        this.light('minutes');
-                        this.light('past');
-                        this.light(this.get_current_hour(hr));
-                        break;
-                    case (min < 33):
-                        this.light('half');
-                        this.light('past');
-                        this.light(this.get_current_hour(hr));
-                        break;
-                    case (min < 38):
-                        this.light('twenty');
-                        this.light('five');
-                        this.light('minutes');
-                        this.light('to');
-                        this.light(this.get_next_hour(hr));
-                        break;
-                    case (min < 43):
-                        this.light('twenty');
-                        this.light('minutes');
-                        this.light('to');
-                        this.light(this.get_next_hour(hr));
-                        break;
-                    case (min < 48):
-                        this.light('quarter');
-                        this.light('to');
-                        this.light(this.get_next_hour(20));
-                        break;
-                    case (min < 53):
-                        this.light('ten');
-                        this.light('minutes');
-                        this.light('to');
-                        this.light(this.get_next_hour(hr));
-                        break;
-                    case (min < 58):
-                        this.light('five');
-                        this.light('minutes');
-                        this.light('to');
-                        this.light(this.get_next_hour(hr));
-                        break;
-                    case (min < 60):
-                        this.light(this.get_next_hour(hr));
-                        this.light('oclock');
-                        break;
-                }
-                if (mili >= 800 && mili <= 900) {
-                    this.light('time');
-                    this.light('for');
-                    this.light('a');
-                    this.light('coffee');
-                }
+            mounted() {
+                this.start_clock()
+            }
+        });
+        app.mount('#app');
 
-
-                if (mili >= 1300 && mili <= 1400) {
-                    this.light('time');
-                    this.light('for');
-                    this.light('lunch');
-                }
-
-                if (mili >= 1500 && mili <= 1600) {
-                    this.light('time');
-                    this.light('for');
-                    this.light('tea');
-                }
-
-                if (mili >= 1800 && mili <= 2000) {
-                    this.light('time');
-                    this.light('for');
-                    this.light('home!');
-                }
-
-
-
-                this.paintclock();
-            },
-        },
-        mounted() {
-            this.start_clock()
-        }
     });
-    app.mount('#app');
 </script>
 </html>
