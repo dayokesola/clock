@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="refresh" content="1800000">
     <title>Dayo's Cool Clock</title>
-    <link rel="stylesheet" type="text/css" href="style.css?id=bds7hs">
+    <link rel="stylesheet" type="text/css" href="style.css?id=evervr">
 </head>
 <body>
     <div id="app" class="container">
@@ -97,7 +97,6 @@
                 var min = Sugar.String.toNumber(Sugar.Date.format(dtm, '{m}'));
                 var sec = Sugar.String.toNumber(Sugar.Date.format(dtm, '{s}'));
                 var mili = Sugar.String.toNumber(Sugar.Date.format(dtm, '{HH}{mm}'));
-                console.log(`${hr}:${min}:${sec}:${mili}`);
                 this.time = [];
                 $(".flex-container").children().css("background-color", this.bg_off_bg);
                 $(".flex-container").children().css("color", this.bg_off_text);
