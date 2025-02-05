@@ -93,3 +93,17 @@ body {
     line-height: 60px;
   }
 }
+@media (max-height: 575.98px) {
+  body {
+    font-size: 0.8em;
+  }
+
+  .flex-container {
+    width: 480px;
+  }
+  .flex-item {
+    width: 30px;
+    margin: 2px 5px;
+    line-height: 18px;
+  }
+}

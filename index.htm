@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="refresh" content="1800000">
     <title>Dayo's Cool Clock</title>
-    <link rel="stylesheet" type="text/css" href="style.css?id=dededfecef">
+    <link rel="stylesheet" type="text/css" href="style.css?id=vdfvd">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GNY40TE2L7"></script>
     <script>
@@ -67,6 +67,7 @@
                     this.time.push(char);
                 },
                 paintclock() {
+                    console.log(this.time);
                     var txt = this.chars;
                     let offset = 0;
                     for (var i = 0; i < this.time.length; i++) {
@@ -79,6 +80,9 @@
                     }
                 },
                 get_current_hour(h) {
+                    if (h > 12) {
+                        h = h - 12;
+                    }
                     let txt = "";
                     switch (h) {
                         case 1: txt = "one"; break;
@@ -99,7 +103,7 @@
                 get_next_hour(h) {
                     var h1 = h + 1;
                     if (h1 > 12) {
-                        h1 = 1;
+                        h = h - 12;
                     }
                     return this.get_current_hour(h1);
                 },
