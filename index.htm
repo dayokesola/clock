@@ -5,6 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta http-equiv="refresh" content="1800000">
     <title>Dayo's Cool Clock</title>
     <link rel="stylesheet" type="text/css" href="style.css?id=bds7hs">
 </head>
@@ -31,7 +32,8 @@
                 bg_on_bg: "#595959",
                 bg_on_text: "#dce0d9",
                 bg_off_bg: "#dce0d9",
-                bg_off_text: "#595959"
+                bg_off_text: "#595959",
+                interval: 10000,
             }
         },
         computed: {
@@ -44,11 +46,10 @@
                 this.update_clock();
                 $(".flex-container div:nth-child(2)").append("'");
                 $(".flex-container div:nth-child(109)").append("'");
-
                 $("body").css("background-color", this.bg_body);
                 setInterval(() => {
                     this.update_clock();
-                }, 60 * 1000);
+                }, this.interval);
             },
             light(char) {
                 this.time.push(char);
@@ -92,10 +93,11 @@
             },
             update_clock() {
                 var dtm = new Date();
-                var hr = Sugar.String.toNumber(Sugar.Date.format(dtm, '{h}'));
+                var hr = Sugar.String.toNumber(Sugar.Date.format(dtm, '%I'));
                 var min = Sugar.String.toNumber(Sugar.Date.format(dtm, '{m}'));
                 var sec = Sugar.String.toNumber(Sugar.Date.format(dtm, '{s}'));
                 var mili = Sugar.String.toNumber(Sugar.Date.format(dtm, '{HH}{mm}'));
+                console.log(`${hr}:${min}:${sec}:${mili}`);
                 this.time = [];
                 $(".flex-container").children().css("background-color", this.bg_off_bg);
                 $(".flex-container").children().css("color", this.bg_off_text);
